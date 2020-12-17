@@ -268,6 +268,8 @@ public class HomeFrm extends javax.swing.JFrame implements View {
         		String mail = txtEmail.getText();
         		int count=0;
                 if(tenKH.length() > 0 && phone.length() > 0 && diaChi.length() > 0 && mail.length() > 0) {
+                	if (tenKH.matches("[A-Za-z].*?")) {
+                		
                 	 if(phone.matches("\\d+")) {
                 	for(KhachHang customer: customers) {
     					if(tenKH.matches(customer.getName())) {
@@ -285,8 +287,11 @@ public class HomeFrm extends javax.swing.JFrame implements View {
                         showData( customers,modelKhachHang);
                         controller.writeToFile(customers, "KH.txt");
                         }
-                }else {
-                	JOptionPane.showMessageDialog(rootPane, "So dien thoai chi la so!");
+                	 }else {
+                		 JOptionPane.showMessageDialog(rootPane, "So dien thoai chi la so!");
+                	 }
+                		 }else {
+                	JOptionPane.showMessageDialog(rootPane, "O trong chi la chu!");
                 }
                 	
                 	} else {
@@ -639,6 +644,7 @@ public class HomeFrm extends javax.swing.JFrame implements View {
         String nhomMH = comboNhomHang.getSelectedItem().toString();
         int count=0;
         if(tenMH.length() > 0 && gia.length() > 0) {
+        	if(tenMH.matches("[A-Za-z].*?")) {
             if(gia.matches("^([+-]?\\d*\\.?\\d*)$")/*("\\d+")*/) {
             	
             	for(MatHang product: items) {
@@ -655,8 +661,11 @@ public class HomeFrm extends javax.swing.JFrame implements View {
                 this.showData(items, modelMatHang);
                 controller.writeToFile(items, "MH.txt");
             	}
+            }else {
+            	JOptionPane.showMessageDialog(rootPane, "Gia ban chi co the la so!");
+            }
             } else {
-                JOptionPane.showMessageDialog(rootPane, "Gia ban chi co the la so!");
+                JOptionPane.showMessageDialog(rootPane, "Ten mat hang chi co the la chu!");
             }
         } else {
             JOptionPane.showMessageDialog(rootPane, "Thong tin khong duoc bo trong!");
