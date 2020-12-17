@@ -136,7 +136,7 @@ public class HomeFrm extends javax.swing.JFrame implements View {
 
         jLabel3.setText("Nhom Hang: ");
 
-        comboNhomHang.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "PT giao thong", "Do may mac", "Do gia dung", "TB Cong nghe cao", "Thuc pham" }));
+        comboNhomHang.setModel(new DefaultComboBoxModel(new String[] {"Do may mac", "Do gia dung", "Thuc pham", ""}));
 
         btnThemMH.setText("Them moi");
         btnThemMH.addActionListener(new java.awt.event.ActionListener() {
@@ -268,6 +268,7 @@ public class HomeFrm extends javax.swing.JFrame implements View {
         		String mail = txtEmail.getText();
         		int count=0;
                 if(tenKH.length() > 0 && phone.length() > 0 && diaChi.length() > 0 && mail.length() > 0) {
+                	 if(phone.matches("\\d+")) {
                 	for(KhachHang customer: customers) {
     					if(tenKH.matches(customer.getName())) {
     						JOptionPane.showMessageDialog(rootPane, "Ten khong the trung nhau");
@@ -284,7 +285,11 @@ public class HomeFrm extends javax.swing.JFrame implements View {
                         showData( customers,modelKhachHang);
                         controller.writeToFile(customers, "KH.txt");
                         }
-                } else {
+                }else {
+                	JOptionPane.showMessageDialog(rootPane, "So dien thoai chi la so!");
+                }
+                	
+                	} else {
                     JOptionPane.showMessageDialog(rootPane, "Thong tin khong duoc bo trong!");
                 }
                 txtTenKH.setText("");
@@ -324,7 +329,7 @@ public class HomeFrm extends javax.swing.JFrame implements View {
                 	public void actionPerformed(ActionEvent e) {
                 		int index = comboSortKH.getSelectedIndex();
                         if (index == 0) {
-                        	Collections.sort(customers, new Comparator<KhachHang>() {
+                        	Collections.sort(customers1, new Comparator<KhachHang>() {
                                
         						@Override
         						public int compare(KhachHang o1, KhachHang o2) {
@@ -332,7 +337,7 @@ public class HomeFrm extends javax.swing.JFrame implements View {
         						}
                             });
                         }
-                        showData(customers, modelKhachHang);
+                        showData(customers1, modelKhachHang);
                 		
                 	}
                 });
@@ -469,15 +474,15 @@ public class HomeFrm extends javax.swing.JFrame implements View {
                         		int count=0;
                         		
                         		if(check.length()>0 && date.length()>0 ) {
-                        			if(month<12) {
-                        				if((month==1 || month== 3 || month== 5 || month== 7 || month==8 || month== 10|| month== 12) && day>0 && day<31 ) {
+                        			if(month<=12) {
+                        				if((month==1 || month== 3 || month== 5 || month== 7 || month==8 || month== 10|| month== 12) && day>0 && day<32 ) {
                         					count=5;
 
-                        				}else if((month==4 || month== 6 || month== 9 || month== 11 ) && day>0 && day<30 ) {
+                        				}else if((month==4 || month== 6 || month== 9 || month== 11 ) && day>0 && day<31 ) {
                         					count=5;
                         				}else if(month==2 && year %4 ==0 && day>0 && day<30) {
                         					
-                        					count=5;
+                        					count=5; 
                         				
                         				}else if((month==2 && year %4 !=0 && day>0 && day<29)) {
                         					count=5;
@@ -486,7 +491,7 @@ public class HomeFrm extends javax.swing.JFrame implements View {
                         					JOptionPane.showMessageDialog(rootPane, "Ngay bi sai");
                         					count=2;
                         				}
-                        			
+                        		
                         			}else {
                         				JOptionPane.showMessageDialog(rootPane, "Thang bi sai");
                         				count=2;
@@ -567,7 +572,7 @@ public class HomeFrm extends javax.swing.JFrame implements View {
                         jScrollPane1_3.setViewportView(tblMH);
                         
                         jLabel5 = new JLabel();
-                        jLabel5.setText("Số lượt lái: ");
+                        jLabel5.setText("So luong: ");
                         jLabel5.setBounds(719, 394, 67, 16);
                         panel.add(jLabel5);
                         
@@ -575,14 +580,6 @@ public class HomeFrm extends javax.swing.JFrame implements View {
                         txtSL.setColumns(10);
                         txtSL.setBounds(844, 391, 116, 22);
                         panel.add(txtSL);
-                        
-                        comboSortHD = new JComboBox();
-                        comboSortHD.setBounds(221, 505, 247, 22);
-                        panel.add(comboSortHD);
-                        
-                        lblSapXep_2 = new JLabel("Sap xep");
-                        lblSapXep_2.setBounds(100, 508, 63, 16);
-                        panel.add(lblSapXep_2);
                         
                         btnRefresh = new JButton("Refresh");
                         btnRefresh.addActionListener(new ActionListener() {
@@ -602,6 +599,12 @@ public class HomeFrm extends javax.swing.JFrame implements View {
                         	public void actionPerformed(ActionEvent e) {
                         		items1.clear();
                         		showItems();
+                        		
+                        		
+                        		
+                        		
+                        		
+                        		
                         	}
                         });
                         btnRefresh_1.setBounds(314, 356, 97, 25);
@@ -636,7 +639,7 @@ public class HomeFrm extends javax.swing.JFrame implements View {
         String nhomMH = comboNhomHang.getSelectedItem().toString();
         int count=0;
         if(tenMH.length() > 0 && gia.length() > 0) {
-            if(gia.matches("\\d+")) {
+            if(gia.matches("^([+-]?\\d*\\.?\\d*)$")/*("\\d+")*/) {
             	
             	for(MatHang product: items) {
 					if(tenMH.matches(product.getName())) {
@@ -727,8 +730,6 @@ public class HomeFrm extends javax.swing.JFrame implements View {
     private JTextField txtSL;
     private JComboBox comboSortKH;
     private JLabel lblSapXep_1;
-    private JComboBox comboSortHD;
-    private JLabel lblSapXep_2;
     private JButton btnRefresh;
     private JButton btnRefresh_1;
     private JLabel lblDay;
@@ -809,6 +810,7 @@ public class HomeFrm extends javax.swing.JFrame implements View {
 
 	private void showItems() {
 		 items1.addAll(controller.readDataFromFile("MH.txt"));
+		 modelMatHang1.setRowCount(0);
 		for (MatHang matHang : items1) {
     		modelMatHang1.addRow(new Object[] {
     				matHang.getId(),matHang.getName(),matHang.getPrice()
